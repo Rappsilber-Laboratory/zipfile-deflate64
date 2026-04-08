@@ -224,30 +224,34 @@ static PyTypeObject Deflate64_type = {
     .tp_methods = Deflate64_methods,
 };
 
+static int deflate64_exec(PyObject *m) {
+    if (PyType_Ready(&Deflate64_type) < 0) {
+        return -1;
+    }
+
+    if (PyModule_AddType(m, &Deflate64_type) < 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
+static PyModuleDef_Slot deflate64_slots[] = {
+    {Py_mod_exec, deflate64_exec},
+#ifdef Py_MOD_GIL_NOT_USED
+    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+#endif
+    {0, NULL}
+};
+
 static PyModuleDef deflate64_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "deflate64",
     .m_doc = "Python access to zlib's infback9 extension for Deflate64 decompression.",
-    .m_size = -1,
+    .m_size = 0,
+    .m_slots = deflate64_slots,
 };
 
 PyMODINIT_FUNC PyInit_deflate64(void) {
-    PyObject* m = PyModule_Create(&deflate64_module);
-    if (m == NULL) {
-        return NULL;
-    }
-
-    if (PyType_Ready(&Deflate64_type) < 0) {
-        Py_DECREF(m);
-        return NULL;
-    }
-
-    Py_INCREF(&Deflate64_type);
-    if (PyModule_AddObject(m, "Deflate64", (PyObject*) &Deflate64_type) < 0) {
-        Py_DECREF(&Deflate64_type);
-        Py_DECREF(m);
-        return NULL;
-    }
-
-    return m;
+    return PyModuleDef_Init(&deflate64_module);
 }
