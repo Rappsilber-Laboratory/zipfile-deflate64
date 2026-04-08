@@ -1,3 +1,5 @@
+import os
+import platform
 from pathlib import Path
 
 from setuptools import Extension, find_packages, setup
@@ -5,6 +7,33 @@ from setuptools import Extension, find_packages, setup
 readme_file = Path(__file__).parent / 'README.md'
 with readme_file.open() as f:
     long_description = f.read()
+
+def get_extension():
+    extra_compile_args = []
+    define_macros = [('STDC', '1')]
+
+    # Avoid conflict between zlib's fdopen macro and system headers on macOS/clangs
+    # By defining fdopen=fdopen, zlib skips its 'NULL' redefinition
+    if platform.system() == 'Windows':
+        define_macros.append(('fdopen', 'fdopen'))
+    else:
+        extra_compile_args.append('-Dfdopen=fdopen')
+
+    return Extension(
+        'zipfile_deflate64.deflate64',
+        [
+            'zlib/zutil.c',
+            'zlib/contrib/infback9/infback9.c',
+            'zlib/contrib/infback9/inftree9.c',
+            'zipfile_deflate64/deflate64/deflate64module.c',
+        ],
+        include_dirs=[
+            'zlib',
+            'zlib/contrib/infback9',
+        ],
+        define_macros=define_macros,
+        extra_compile_args=extra_compile_args,
+    )
 
 setup(
     name='zipfile-deflate64',
@@ -42,22 +71,5 @@ setup(
     ],
     python_requires='>=3.6',
     packages=find_packages(),
-    ext_modules=[
-        Extension(
-            'zipfile_deflate64.deflate64',
-            [
-                'zlib/zutil.c',
-                'zlib/contrib/infback9/infback9.c',
-                'zlib/contrib/infback9/inftree9.c',
-                'zipfile_deflate64/deflate64/deflate64module.c',
-            ],
-            include_dirs=[
-                'zlib',
-                'zlib/contrib/infback9',
-            ],
-            define_macros=[
-                ('STDC', '1'),
-            ],
-        ),
-    ],
+    ext_modules=[get_extension()],
 )
