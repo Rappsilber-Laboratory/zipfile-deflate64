@@ -55,6 +55,9 @@ setup(
                 'zlib',
                 'zlib/contrib/infback9',
             ],
+            define_macros=[
+                ('STDC', '1'),
+            ],
         ),
     ],
 )
