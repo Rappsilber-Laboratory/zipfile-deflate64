@@ -46,6 +46,7 @@ jobs:
         env:
           CIBW_FREE_THREADED_SUPPORT: 1
           CIBW_PRERELEASE_PYTHONS: 1
+          CIBW_SKIP: "cp36-* cp37-* cp38-* cp39-* pp*"
 
       - uses: actions/upload-artifact@v4
         with:
