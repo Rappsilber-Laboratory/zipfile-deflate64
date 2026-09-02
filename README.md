@@ -1,9 +1,9 @@
 # xicommon-zipfile-deflate64
 [![PyPI](https://img.shields.io/pypi/v/xicommon-zipfile-deflate64)](https://pypi.org/project/xicommon-zipfile-deflate64/)
 
-> [!WARNING]
-> This package is a fork of zipfile-deflate64 and is only intended for usage in the [Rappsilber-Laboratory/xicommon](https://github.com/Rappsilber-Laboratory/xicommon) project. It will not be maintained for any other purposes.
-> The main objective of this fork is to support free threaded Python.
+**WARNING:**
+This package is a fork of zipfile-deflate64 and is only intended for usage in the [Rappsilber-Laboratory/xicommon](https://github.com/Rappsilber-Laboratory/xicommon) project. It will not be maintained for any other purposes.
+The main objective of this fork is to support free threaded Python.
 
 Extract Deflate64 ZIP archives with Python's `zipfile` API.
 
