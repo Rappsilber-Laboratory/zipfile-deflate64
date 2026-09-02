@@ -36,7 +36,7 @@ def get_extension():
     )
 
 setup(
-    name='zipfile-deflate64',
+    name='xicommon-zipfile-deflate64',
     description="Extract Deflate64 ZIP archives with Python's zipfile API.",
     long_description=long_description,
     long_description_content_type='text/markdown',
